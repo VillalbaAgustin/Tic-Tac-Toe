@@ -1,18 +1,26 @@
 import { useState } from "react";
 import "./App.css";
-import confetti from 'canvas-confetti';
+import confetti from "canvas-confetti";
 
 import { Square } from "./components/Square";
 import { TURNS } from "./constanst.js";
 import { checkEndGame, checkWinnerFrom } from "./logic/board";
 import { WinnerModal } from "./components/WinnerModal";
 
-
 function App() {
-  const [board, setBoard] = useState(Array(9).fill(null));
-  const [turn, setTurn] = useState(TURNS.x);
-  const [winner, setWinner] = useState(null); //* null no hay ganador, false empate.
+  const [board, setBoard] = useState(() => {
+    const boardFromStorage = window.localStorage.getItem("board");
+    return boardFromStorage
+      ? JSON.parse(boardFromStorage)
+      : Array(9).fill(null);
+  });
 
+  const [turn, setTurn] = useState(()=>{
+    const turnFromLocalStorage = window.localStorage.getItem('turn');
+    return turnFromLocalStorage ?? TURNS.x
+  });
+
+  const [winner, setWinner] = useState(null); //* null no hay ganador, false empate.
 
   const updateBoard = (index) => {
     //No actualizamos si la posición ya esta marcada o hay un ganador
@@ -26,13 +34,17 @@ function App() {
     //Cambiar de turno
     turn === TURNS.x ? setTurn(TURNS.o) : setTurn(TURNS.x);
 
+    //Guardamos partida local storage 
+    window.localStorage.setItem('board' ,JSON.stringify(newBoard));
+    window.localStorage.setItem('turn', turn);
+    
     //Revisamos si hay ganador
     const newWinner = checkWinnerFrom(newBoard);
     if (newWinner) {
       confetti();
       setWinner(newWinner);
-    } else if (checkEndGame(newBoard)){
-      setWinner(false) //Empate
+    } else if (checkEndGame(newBoard)) {
+      setWinner(false); //Empate
     }
   };
 
@@ -60,7 +72,7 @@ function App() {
         <Square isSelected={turn === TURNS.o}>{TURNS.o}</Square>
       </section>
       <button onClick={restGame}>Empezar de nuevo</button>
-        <WinnerModal restGame={restGame} winner={winner}/>
+      <WinnerModal restGame={restGame} winner={winner} />
     </main>
   );
 }
