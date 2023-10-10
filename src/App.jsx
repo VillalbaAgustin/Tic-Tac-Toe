@@ -15,9 +15,9 @@ function App() {
       : Array(9).fill(null);
   });
 
-  const [turn, setTurn] = useState(()=>{
-    const turnFromLocalStorage = window.localStorage.getItem('turn');
-    return turnFromLocalStorage ?? TURNS.x
+  const [turn, setTurn] = useState(() => {
+    const turnFromLocalStorage = window.localStorage.getItem("turn");
+    return turnFromLocalStorage ?? TURNS.x;
   });
 
   const [winner, setWinner] = useState(null); //* null no hay ganador, false empate.
@@ -32,12 +32,16 @@ function App() {
     setBoard(newBoard);
 
     //Cambiar de turno
-    turn === TURNS.x ? setTurn(TURNS.o) : setTurn(TURNS.x);
+    // turn === TURNS.x ? setTurn(TURNS.o) : setTurn(TURNS.x);
+    const newTurn = turn === TURNS.x ? TURNS.o : TURNS.x;
+    setTurn(newTurn)
 
-    //Guardamos partida local storage 
-    window.localStorage.setItem('board' ,JSON.stringify(newBoard));
-    window.localStorage.setItem('turn', turn);
-    
+
+
+    //Guardamos partida local storage
+    window.localStorage.setItem("board", JSON.stringify(newBoard));
+    window.localStorage.setItem("turn", newTurn);
+
     //Revisamos si hay ganador
     const newWinner = checkWinnerFrom(newBoard);
     if (newWinner) {
@@ -52,6 +56,9 @@ function App() {
     setBoard(Array(9).fill(null));
     setTurn(TURNS.x);
     setWinner(null);
+
+    window.localStorage.removeItem("board");
+    window.localStorage.removeItem("turn");
   };
 
   return (
