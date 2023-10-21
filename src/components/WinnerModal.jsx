@@ -1,7 +1,7 @@
 import React from "react";
 import { Square } from "./Square";
 
-export const WinnerModal = ({winner, restGame}) => {
+export const WinnerModal = ({ winner, restGame }) => {
   if (winner === null) return null;
 
   const winnerText = winner === false ? "Empate" : "Ganó";

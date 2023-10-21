@@ -1,4 +1,4 @@
-import {WINNER_COMBOS} from '../constanst.js';
+import { WINNER_COMBOS } from "../constanst.js";
 
 export const checkWinnerFrom = (boardToCheck) => {
   for (const combo of WINNER_COMBOS) {
@@ -15,7 +15,6 @@ export const checkWinnerFrom = (boardToCheck) => {
   return null;
 };
 
-
 export const checkEndGame = (newBoard) => {
-  return newBoard.every((square) => square !== null)
-}
+  return newBoard.every((square) => square !== null);
+};
