@@ -3,7 +3,7 @@ export const Square = ({ children, isSelected, updateBoard, index }) => {
   const hadleClick = () => {
     updateBoard(index);
   };
-fun
+
   return (
     <div className={className} onClick={hadleClick}>
       {children}
